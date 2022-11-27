@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --primary-color: #3232fb;
+  --secondary-color: #befbbe;
+  --hight-light-color: #c3ff00;
+  --danger-color: #fd9d9d;
+  --caution-color: #ffd000;
+  --success-color: #b6ffb6;
+  --white-color: #f1f1f1;
+  --black-color: #333;
+}
+
+*,
+::before,
+::after {
+  border: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  font-size: 1.6rem;
+  font-weight: normal;
+  height: 100vh;
+}
+
+.container {
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 0 4rem;
+  max-width: 114rem;
+  background-color: var(--white-color);
+}
+
+.registry {
+  width: 100%;
+}
+
+.registry .entry {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  margin-top: 1.65rem;
+}
+
+.registry .entry input,
+button,
+select,
+textarea {
+  height: 3rem;
+  font-size: 1.2em;
+  padding: 0 1.2em;
+  font-weight: 300;
+}
+
+.registry .entry button {
+  cursor: pointer;
+  border-radius: 10px;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.registry .entry button:hover {
+  background-color: var(--secondary-color);
+  color: var(--black-color);
+}
+
+.registry .entry .entry--upper {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3.3rem;
+  margin-bottom: 2.3rem;
+}
+
+.registry .entry .entry--lower {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.registry .entry .entry--upper .entry-control .entry--input {
+  text-align: right;
+  position: relative;
+}
+
+.registry .entry .entry--upper .entry-control .entry--input::before {
+  content: '$';
+  display: block;
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  color: var(--black-color);
+}
+
+.registry .entry .entry--lower .entry-control .entry--description {
+  height: 7rem;
+  width: 60rem;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.log {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  height: 100%;
+}
+
+.log .log-list {
+  width: 50rem;
+  padding: 0 3.4rem;
+  margin-bottom: 2.8rem;
+}
+
+.log .log-list .income {
+  background-color: var(--success-color);
+}
+
+.log .log-list .expense {
+  background-color: var(--danger-color);
+}
+
+.log .log-list th {
+  text-align: left;
+}
+
+.log .log-list td {
+  margin-right: 1.2rem;
+}
+
+.log .log-list td .log-item--date {
+  width: 6rem;
+  padding: 0 1.2rem;
+}
+
+.log .log-list td .log-item--description {
+  width: 22rem;
+  padding: 0 1.2rem;
+}
+
+.log .log-list td .log-item--category {
+  width: 12rem;
+  padding: 0 1.2rem;
+}
+
+.log .log-list td .log-item--amount {
+  width: 14rem;
+  padding: 0 1.2rem;
+  text-align: right;
+}
+
+.log .log-list .log-item--date {
+  width: 4rem;
+}
+
+.log .log-list .log-item--description {
+  width: 8rem;
+}
+
+.log .log-list .log-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}

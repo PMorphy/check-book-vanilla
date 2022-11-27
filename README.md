@@ -1,1 +1,3 @@
-# check-book-vanilla
+# Checkbook App written in Javascript
+
+## Written by A. Hawkins

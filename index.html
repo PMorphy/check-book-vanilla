@@ -13,23 +13,19 @@
         <div class="entry">
           <div class="entry--upper">
             <div class="entry-control">
-              <input
-                class="entry--input"
-                id="input-amount"
-                placeholder="Amount"
-              />
+              <input class="entry--input" id="input-amount" placeholder="$" />
             </div>
             <div class="entry-control">
               <select class="category">
-                <option disabled selected value>-- select a Category --</option>
-                <option value="income">Income</option>
-                <option value disabled>—————————————</option>
-                <option value="rent">Rent</option>
-                <option value="groceries">Groceries</option>
-                <option value="dine-out">Dine Out</option>
-                <option value="medical">Medical</option>
-                <option value="utilities">Utilities</option>
-                <option value="gift">Gift</option>
+                <option disabled selected value>-- select a category --</option>
+                <option value="Income">Income</option>
+                <option value disabled>————————</option>
+                <option value="Rent">Rent</option>
+                <option value="Groceries">Groceries</option>
+                <option value="Dine Out">Dine Out</option>
+                <option value="Medical">Medical</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Gift">Gift</option>
               </select>
             </div>
           </div>
@@ -48,47 +44,35 @@
           </div>
         </div>
       </section>
+      <hr />
       <section class="log">
         <table class="log-list">
-          <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Amount</th>
-          </tr>
-          <tr class="income">
-            <td><h5 class="log-item--date">11/2</h5></td>
-            <td><p class="log-item--description">Salary from Job</p></td>
-            <td><p class="log-item--category">Income</p></td>
-            <td><h4 class="log-item--amount">$2300.65</h4></td>
-          </tr>
-          <tr class="expense">
-            <td><h5 class="log-item--date">11/4</h5></td>
-            <td><p class="log-item--description">Groceries</p></td>
-            <td><p class="log-item--category">Food</p></td>
-            <td><h4 class="log-item--amount">$-276.13</h4></td>
-          </tr>
-          <tr class="expense">
-            <td><h5 class="log-item--date">11/4</h5></td>
-            <td><p class="log-item--description">Clothes for Aidan</p></td>
-            <td><p class="log-item--category">Clothing</p></td>
-            <td><h4 class="log-item--amount">$-870.45</h4></td>
-          </tr>
-          <tr class="expense">
-            <td><h5 class="log-item--date">11/6</h5></td>
-            <td><p class="log-item--description">Taco Bell</p></td>
-            <td><p class="log-item--category">Dining Out</p></td>
-            <td><h4 class="log-item--amount">$-14.50</h4></td>
-          </tr>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+
+          <tbody></tbody>
         </table>
         <div class="log-report">
           <div class="report">
-            <div class="report-monthly-gains"><h3>$2300.65</h3></div>
+            <div class="report-monthly-gains">
+              <span>Monthly Gains $</span>
+              <span class="monthly-gains--text">0.00</span>
+            </div>
             <div class="report-monthly-losses">
-              <h4>$1132.08</h4>
+              <span>Monthly Loasses $</span>
+              <span class="monthly-losses--text">0.00</span>
             </div>
             <hr />
-            <div class="report-monthly-sum"><h2>$1168.57</h2></div>
+            <div class="report-monthly-sum">
+              <span>Total $</span>
+              <span class="monthly-sum--text">0.00</span>
+            </div>
           </div>
         </div>
       </section>

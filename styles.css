@@ -6,7 +6,7 @@
   --hight-light-color: #c3ff00;
   --danger-color: #fd9d9d;
   --caution-color: #ffd000;
-  --success-color: #b6ffb6;
+  --success-color: #5bff5b;
   --white-color: #f1f1f1;
   --black-color: #333;
 }
@@ -169,4 +169,26 @@ textarea {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.report {
+  margin: 4rem;
+}
+
+.report .monthly-gains--text {
+  font-weight: 300;
+  color: var(--success-color);
+  font-size: 3.6rem;
+}
+
+.report .monthly-losses--text {
+  font-weight: 300;
+  color: var(--danger-color);
+  font-size: 3.6rem;
+}
+
+.report .monthly-sum--text {
+  font-weight: 300;
+  color: var(--primary-color);
+  font-size: 3.6rem;
 }

@@ -1,12 +1,10 @@
-import { Income, Expense } from './transaction.js';
-
 const DOMSelectors = {
   container: '.container',
   submitButton: '.submit--button',
   logList: '.log-list',
-  reportMonthlyGains: '.report-monthly-gains',
-  reportMonthlyLosses: '.report-monthly-losses',
-  reportMonthlySum: '.report-monthly-sum'
+  reportMonthlyGains: '.monthly-gains--text',
+  reportMonthlyLosses: '.monthly-losses--text',
+  reportMonthlySum: '.monthly-sum--text'
 };
 
 const entrySelectors = {
@@ -20,8 +18,8 @@ const EMPTY_STRING = '';
 const ZERO = 0;
 const NEXT = 1;
 const ENTER = 13;
-const EXPENSES = 'EXPENSES';
-const INCOME = 'INCOME';
+const EXPENSE = 'expense';
+const INCOME = 'income';
 const KEY_PRESS = 'keypress';
 const CLICK = 'click';
 const BEFORE_END = 'beforeend';
@@ -29,12 +27,12 @@ const BEFORE_END = 'beforeend';
 const ModelController = (() => {
   const position = {
     transactions: {
-      INCOME: [],
-      EXPENSES: []
+      income: [],
+      expense: []
     },
     totals: {
-      INCOME: ZERO,
-      EXPENSES: ZERO
+      income: ZERO,
+      expense: ZERO
     },
     report: {
       monthlyGains: ZERO,
@@ -44,41 +42,51 @@ const ModelController = (() => {
   };
 
   const addTransaction = (transaction) => {
-    const { transactions } = position;
-    const { type } = transaction;
-    let newTransaction;
+    const {
+      amountEntry: amount,
+      categoryEntry: category,
+      descriptionEntry: description
+    } = transaction;
 
-    console.log(transaction);
+    const date = new Date();
+    const stamp = `${date.getMonth() + 1}/${date.getDate()}`;
 
-    if (transactions[type]?.length > ZERO) {
-      transaction.id =
-        transactions[type][transactions[type].length - NEXT].id + NEXT;
-    } else transaction.id = ZERO;
+    const newTransaction = {
+      amount,
+      category,
+      description,
+      type: category === 'Income' ? INCOME : EXPENSE,
+      date: stamp
+    };
 
-    if (type === INCOME) {
-      newTransaction = new Income(transaction);
-    } else newTransaction = new Expense(transaction);
+    let index = position.transactions[newTransaction.type].length;
+    newTransaction.id = `${index}-${newTransaction.type}`;
 
-    transactions[type].push(newTransaction);
+    position.transactions[newTransaction.type].push(newTransaction);
     return newTransaction;
   };
 
   const getReport = () => {
-    const {
-      report: { monthlyGains, monthlyLosses, monthlySum },
-      totals: { INCOME, EXPENSES }
-    } = position;
+    const { report, totals } = position;
     return {
-      monthlyGains,
-      monthlyLosses,
-      monthlySum,
-      incomeTotals: INCOME,
-      expenseTotals: EXPENSES
+      report,
+      incomeTotals: totals[INCOME],
+      expenseTotals: totals[EXPENSE]
     };
   };
 
   const calculateReport = (transaction) => {
-    console.log(transaction);
+    const { amount } = transaction;
+    if (transaction.type === INCOME) {
+      position.totals.income += parseFloat(amount);
+      position.report.monthlyGains += parseFloat(amount);
+    } else {
+      position.totals.expense += parseFloat(amount);
+      position.report.monthlyLosses += parseFloat(amount);
+    }
+
+    position.report.monthlySum =
+      position.report.monthlyGains - position.report.monthlyLosses;
   };
 
   return { addTransaction, getReport, calculateReport };
@@ -86,12 +94,11 @@ const ModelController = (() => {
 
 const UIController = (() => {
   const { category, description, amount } = entrySelectors;
+
   const getInput = () => {
     const categoryEntry = document.querySelector(category).value;
     const descriptionEntry = document.querySelector(description).value;
     const amountEntry = document.querySelector(amount).value;
-
-    console.log(categoryEntry, descriptionEntry, amountEntry);
 
     if (validateForm(categoryEntry, descriptionEntry, amountEntry)) {
       return {
@@ -103,7 +110,6 @@ const UIController = (() => {
   };
 
   const validateForm = (category, description, amount) => {
-    console.log(category, amount, description);
     if (description !== EMPTY_STRING && !isNaN(amount) && amount > 0)
       return true;
     else return false;
@@ -111,11 +117,12 @@ const UIController = (() => {
 
   const addTransactionToList = (transaction) => {
     let html;
-    const logList = document.querySelector(DOMSelectors.logList);
+
+    const logList = document.querySelector(`${DOMSelectors.logList} tbody`);
     if (transaction.type === INCOME) {
       html = `
       <tr class="income">
-        <td><h5 class="log-item--date">${transaction.data}</h5></td>
+        <td><h5 class="log-item--date">${transaction.date}</h5></td>
         <td><p class="log-item--description">${transaction.description}</p></td>
         <td><p class="log-item--category">${transaction.category}</p></td>
         <td><h4 class="log-item--amount">$${transaction.amount}</h4></td>
@@ -124,7 +131,7 @@ const UIController = (() => {
     } else {
       html = `
       <tr class="expense">
-        <td><h5 class="log-item--date">${transaction.data}</h5></td>
+        <td><h5 class="log-item--date">${transaction.date}</h5></td>
         <td><p class="log-item--description">${transaction.description}</p></td>
         <td><p class="log-item--category">${transaction.category}</p></td>
         <td><h4 class="log-item--amount">$-${transaction.amount}</h4></td>
@@ -147,7 +154,7 @@ const UIController = (() => {
     document.querySelector(entrySelectors.amount).focus();
   };
 
-  const updateDisplay = (model) => {
+  const updateDisplay = (report) => {
     const { reportMonthlyGains, reportMonthlyLosses, reportMonthlySum } =
       DOMSelectors;
     writeToScreen(reportMonthlyGains, report.monthlyGains);
@@ -174,12 +181,12 @@ const UIController = (() => {
 
   const handleAddTransaction = () => {
     const transaction = uiController.getInput();
+
     if (transaction) {
       const newTransaction = modelController.addTransaction(transaction);
-
       uiController.addTransactionToList(newTransaction);
       uiController.clearInputs();
-      updateReport();
+      updateReport(newTransaction);
     }
   };
 
@@ -192,7 +199,7 @@ const UIController = (() => {
   };
 
   const updateDisplay = () => {
-    uiController.updateDisplay(modelController.getReport());
+    uiController.updateDisplay(modelController.getReport().report);
   };
 
   const setupEventListeners = () => {
